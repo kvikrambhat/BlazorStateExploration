@@ -38,15 +38,15 @@
 
 > **_NOTE:_**  
 ![Core Principles of Redux](https://www.freecodecamp.org/news/content/images/size/w1000/2022/06/2.png)
--**Store** : The Redux store is the main, central bucket which stores all the states of an application. It should be considered and maintained as a single source of truth for the state of the application.
--**Action** : As mentioned above, state in Redux is read-only. This helps you restrict any part of the view or any network calls to write/update the state directly.Instead, if anyone wants to change the state of the application, then they'll need to express their intention of doing so by emitting or dispatching an action.
--**Reducer** : Reducers, as the name suggests, take in two things: previous state and an action. Then they reduce it (read it return) to one entity: the new updated instance of state.
+- **Store** : The Redux store is the main, central bucket which stores all the states of an application. It should be considered and maintained as a single source of truth for the state of the application.
+- **Action** : As mentioned above, state in Redux is read-only. This helps you restrict any part of the view or any network calls to write/update the state directly.Instead, if anyone wants to change the state of the application, then they'll need to express their intention of doing so by emitting or dispatching an action.
+- **Reducer** : Reducers, as the name suggests, take in two things: previous state and an action. Then they reduce it (read it return) to one entity: the new updated instance of state.
 
 > **_NOTE:_**  
 **Fluxor Rules**
--State should always be read-only.
--To alter state our app should dispatch an action.
--Every reducer that processes the dispatched action type will create new state to reflect the old state combined with the changes expected for the action.
+- State should always be read-only.
+- To alter state our app should dispatch an action.
+- Every reducer that processes the dispatched action type will create new state to reflect the old state combined with the changes expected for the action.
 
 - **Step 3** : Define action class to update the todo items as they get added in the UI component
     ~~~
