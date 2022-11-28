@@ -1,0 +1,8 @@
+﻿@using HybridTodo.State;
+
+<span>Todo Count Compo : @Todos.Todos.Count</span>
+
+@code {
+    [Parameter]
+    public TodoState Todos { get; set; }
+}

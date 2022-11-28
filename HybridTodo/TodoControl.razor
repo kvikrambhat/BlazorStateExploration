@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using HybridTodo.Models
+@using HybridTodo.State
+@using Microsoft.AspNetCore.Components.Forms
+@inject TodoState TodoState //GRL : Step 3 - Inject the state object [The app root will need to inject this].
+@*If state needs to be made optional, we will need to define a service [service locator pattern] to inject state objects and that service
+     can be used to create or skip state objects for various ui components.
+ *@
+
+<EditForm Model="@TodoState.CurrentTodo">
+    <div class="mb-3">
+        <label for="todoItem" class="form-label">ToDo Item:</label>
+        @*GRL : Step 3 - Bind to state values as needed*@
+        <InputText @bind-Value="TodoState.CurrentTodo.TodoItem" class="form-control" id="todoItem" />
+        <button class="btn btn-primary mt-2" @onclick="AddTodo">Add Todo</button>
+    </div>
+</EditForm>
+
+<h3>ToDo List</h3>
+<ul>
+    @foreach (var t in TodoState.Todos) //GRL : Step 3 - Access state values as needed
+    {
+        <li class="mb-2">
+            @if (t.IsComplete)
+            {
+                <span style="text-decoration: line-through">
+                    @t.TodoItem
+                </span>
+            }
+            else
+            {
+                @t.TodoItem
+                <button class="btn btn-warning btn-sm ms-3"
+                @onclick="()=>t.IsComplete=true">
+                    Complete
+                </button>
+            }
+        </li>
+    }
+
+</ul>
+
+@code {
+    private void AddTodo()
+    {       
+        TodoState.AddTodo(TodoState.CurrentTodo);//GRL : Step 3 - Update state as needed 
+    }
+}

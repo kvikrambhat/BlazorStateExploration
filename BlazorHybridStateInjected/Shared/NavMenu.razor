@@ -1,0 +1,71 @@
+﻿@using HybridTodo.State
+@*GRL : Step 5 - Inject the state variable to be used*@
+@inject TodoState todoState
+@*GRL : Step 5 - Implement disposer to make sure the event subscription is removed, this can cause a memory leak otherwise*@
+@implements IDisposable
+
+<div class="top-row ps-3 navbar navbar-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="">BlazorHybridStateInjected</a>
+		<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+	<nav class="flex-column">
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+				<span class="oi oi-home" aria-hidden="true"></span> Home
+			</NavLink>
+		</div>
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="counter">
+				<span class="oi oi-plus" aria-hidden="true"></span> Counter
+			</NavLink>
+		</div>
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" href="fetchdata">
+				<span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+			</NavLink>
+		</div>
+		<div class="nav-item px-3">
+            <NavLink class="nav-link">
+                Todo Count = @todoState.Todos.Count @*GRL : Step 5 - Access the required state value *@
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link">
+                <TodoCountSubComponent Todos=@todoState />  @*GRL : Step 5 - State values can also be passed into components in case needed for flexibility *@
+            </NavLink>
+        </div>
+	</nav>
+</div>
+
+@code {
+	private bool collapseNavMenu = true;
+
+	private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+	//GRL : Step 5 - Implement the event handler to inform the component that state has changed
+	void TodoHasBeenAdded(object sender, EventArgs e) => StateHasChanged();
+
+	protected override void OnInitialized()
+	{
+		//GRL : Step 5 - Subscribe to the event from the state variable
+		todoState.TodoAddedEventHandler += TodoHasBeenAdded;
+	}
+
+	void IDisposable.Dispose()
+	{
+		//GRL : Step 5 - Un-subscribe to the event from the state variable
+		todoState.TodoAddedEventHandler -= TodoHasBeenAdded;
+	}
+
+
+	private void ToggleNavMenu()
+	{
+		collapseNavMenu = !collapseNavMenu;
+	}
+}
