@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using HybridTodo.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using HybridTodo.State.Todo
+
+@*GRL : Step 6 - Inject the dispatcher to sent updates to store*@
+@inject IDispatcher dispacher
+@*GRL : Step 6 - Inject the state to bind to UI elements*@
+@inject IState<TodoState> todoState
+
+<EditForm Model="@todo">
+    <div class="mb-3">
+        <label for="todoItem" class="form-label">ToDo Item:</label>
+        @*GRL : Step 6 - Bind to state values as needed*@
+        <InputText @bind-Value="todoState.Value.CurrentTodo.TodoItem" class="form-control" id="todoItem" />
+        <button class="btn btn-primary mt-2" @onclick="AddTodo">Add Todo</button>
+    </div>
+</EditForm>
+
+<h3>ToDo List</h3>
+<ul>
+    @*GRL : Step 6 - Bind to state values as needed*@
+    @foreach (var t in todoState.Value.Todos)
+    {
+        <li class="mb-2">
+            @if (t.IsComplete)
+            {
+                <span style="text-decoration: line-through">
+                    @t.TodoItem
+                </span>
+            }
+            else
+            {
+                @t.TodoItem
+                <button class="btn btn-warning btn-sm ms-3"
+                @onclick="()=>t.IsComplete=true">
+                    Complete
+                </button>
+            }
+        </li>
+    }
+
+</ul>
+
+@code {
+    List<TodoModel> todos = new();
+    TodoModel todo = new();
+
+    private void AddTodo()
+    {
+        //GRL : Step 6 - Dispatch the action to update the state with the needed data
+        dispacher.Dispatch(new UpdateTodoAction(todoState.Value.CurrentTodo.TodoItem));
+    }
+}
